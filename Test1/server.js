@@ -5,7 +5,7 @@ var exec = require('child_process').exec;
 
 var fs = require('fs');
 
-var fun = function () {
+/*var fun = function () {
     console.log("fun() start");
     exec('start helloworld.exe', function (err, data) {
         console.log(err)
@@ -13,7 +13,7 @@ var fun = function () {
     });
 }
 fun();
-
+*/
 
 fs.readFile('./index.html', function (err, html) {
     if (err) {

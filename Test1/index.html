@@ -6,8 +6,10 @@
         stroke-width: 2px;
     }
 </style>
-<svg width="960" height="500"></svg>
+<svg width="1000" height="500"></svg>
 <script src="//d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
 
 var svg = d3.select("svg"),
@@ -15,38 +17,114 @@ var svg = d3.select("svg"),
     height = +svg.attr("height"),
     radius = 32;
 
-var circles = d3.range(20).map(function() {
-  return {
-    x: Math.round(Math.random() * (width - radius * 2) + radius),
-    y: Math.round(Math.random() * (height - radius * 2) + radius)
-  };
-});
+var rx_4 = 20, ry_4 = 185, tx_4 = 65, ty_4 = 215;
+var rdx_4 = 0, rdy_4 = 0, tdx_4 = 0, tdy_4 = 0;
 
-var color = d3.scaleOrdinal()
-    .range(d3.schemeCategory20);
+var i = 1;
 
-svg.selectAll("circle")
-  .data(circles)
-  .enter().append("circle")
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", radius)
-    .style("fill", function(d, i) { return color(i); })
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
 
-function dragstarted(d) {
-  d3.select(this).raise().classed("active", true);
+var drag = d3.behavior.drag()
+             .on("dragstart", function () {
+
+             })
+             .on('drag', function () {
+                 if (i == 1) {
+                     rdx_4 = d3.event.x - rx_4;
+                     //     x_4 = x_4 + dx_4;
+                     tdx_4 = d3.event.x - tx_4;
+                     console.log(rdx_4);
+                     rdy_4 = d3.event.y - ry_4;
+                     //     y_4 = y_4 + dy_4;
+                     tdy_4 = d3.event.y - ty_4;
+                     console.log(rdy_4);
+                     i = 0;
+                 }
+                 rectangle4 .attr('x', d3.event.x - rdx_4)
+                            .attr('y', d3.event.y - rdy_4);
+                 text4      .attr('x', d3.event.x - tdx_4)
+                            .attr('y', d3.event.y - tdy_4);
+
+             });
+             
+/*var drag = d3.behavior.drag()
+.on("drag", dragmove);
+
+var point = d3.mouse(this)
+, p = { x: point[0], y: point[1] };
+*/
+
+
+var rectangle_toolbox = svg.append("rect")
+    .attr("x", 10)
+    .attr("fill", "#95b7b7")
+    .attr("y", 10)
+    .attr("width", 150)
+    .attr("height", 490);
+    
+var rectangle1 = svg.append("rect")
+    .attr("x", 20)
+    .attr("fill", "#6666ff")
+    .attr("y", 20)
+    .attr("width", 130)
+    .attr("height", 50);
+
+var rectangle2 = svg.append("rect")
+    .attr("x", 20)
+    .attr("fill", "#66ff66")
+    .attr("y", 75)
+    .attr("width", 130)
+    .attr("height", 50);
+
+
+var rectangle3 = svg.append("rect")
+    .attr("x", 20)
+    .attr("fill", "#ffff66")
+    .attr("y", 130)
+    .attr("width", 130)
+    .attr("height", 50);
+
+
+var rectangle4 = svg.append("rect")
+    .attr("x", rx_4)
+    .attr("fill", "#ff6666")
+    .attr("y", ry_4)
+    .attr("width", 130)
+    .attr("height", 50)
+    .attr("cursor", "move")
+  //  .attr("transform", "translate(" + p.x + "," + p.y + ")")
+    .call(drag);
+
+
+
+var text1 = svg.append("text")
+    .attr("y", 50)
+    .attr("x", 65)
+    .attr("font-size", 14)
+    .text("Node 1");
+
+var text2 = svg.append("text")
+    .attr("y", 105)
+    .attr("x", 65)
+    .attr("font-size", 14)
+    .text("Node 2");
+
+var text3 = svg.append("text")
+    .attr("y", 160)
+    .attr("x", 65)
+    .attr("font-size", 14)
+    .text("Node 3");
+
+var text4 = svg.append("text")
+    .attr("y", ty_4)
+    .attr("x", tx_4)
+    .attr("font-size", 14)
+    .text("Node 4");
+
+/*function dragmove(d) {
+    var x = d3.event.x;
+    var y = d3.event.y;
+    d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
 }
-
-function dragged(d) {
-  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-}
-
-function dragended(d) {
-  d3.select(this).classed("active", false);
-}
+*/
 
 </script>
